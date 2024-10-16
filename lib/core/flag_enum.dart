@@ -1,8 +1,7 @@
 enum Flag {
   help(abbr: 'h'),
   verbose(abbr: 'v'),
-  version(),
-  config();
+  version();
 
   const Flag({this.abbr});
   final String? abbr;

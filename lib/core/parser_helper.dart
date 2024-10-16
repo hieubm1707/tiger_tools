@@ -21,9 +21,8 @@ ArgParser buildParser() {
       negatable: false,
       help: 'Print the tool version.',
     )
-    ..addFlag(
-      Flag.config.name,
-      negatable: false,
-      help: 'Generate a service configuration.',
+    ..addCommand(
+      Command.serviceConfig.value,
+      ArgParser()..addSeparator('Generate a service config file.'),
     );
 }
