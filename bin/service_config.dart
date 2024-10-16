@@ -40,6 +40,10 @@ void buildServiceConfig() {
     options: services.map((e) => e.name).toList(),
     defaults: services.map((e) => e.value).toList(),
   ).interact();
+  if (selectedServicesIndexes.isEmpty) {
+    stdout.writeln('No service selected, use \'space\' to select a service');
+    return;
+  }
 
   if (selectedServicesIndexes.length == 1) {
     final service = services[selectedServicesIndexes.first];
