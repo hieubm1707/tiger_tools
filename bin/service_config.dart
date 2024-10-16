@@ -89,6 +89,7 @@ void writeToConfigFile(String input, String output) {
 part 'app_config.ez.dart';
 
 class AppConfig {
+
 ''', mode: FileMode.writeOnly);
   outputValueFile.writeAsStringSync('''
 // GENERATED CODE - DO NOT MODIFY BY HAND
@@ -96,6 +97,7 @@ class AppConfig {
 part of 'app_config.dart';
 
 class _AppConfig {
+
 ''', mode: FileMode.writeOnly);
   final lines = readLines(input);
   for (final line in lines) {
