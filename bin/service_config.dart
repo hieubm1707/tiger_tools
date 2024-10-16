@@ -60,14 +60,14 @@ void buildServiceConfig() {
       final service = services[serviceIndex];
       final inputPath =
           '../env/${service.path}/env/$selectedProduct/.env.$envSelected';
-      final outputPath = './packages/${service.path}';
+      final outputDirectoryPath = './packages/${service.path}';
       final inputFile = File(inputPath);
-      final outFile = Directory(outputPath);
+      final outFile = Directory(outputDirectoryPath);
       if (!inputFile.existsSync() || !outFile.existsSync()) {
-        print('$inputPath or $outputPath was not found');
+        print('$inputPath or $outputDirectoryPath was not found');
         return;
       }
-
+      final outputPath = '$outputDirectoryPath/lib/src/core/config';
       writeToConfigFile(inputPath, outputPath);
     }
   }
@@ -120,6 +120,8 @@ class _AppConfig {
   outputFile.writeAsStringSync('''
 }
 ''', mode: FileMode.append);
+  stdout.writeln('$outputFile generated successfully');
+  stdout.writeln('$outputValueFile generated successfully');
 }
 
 Map<String, dynamic> getKeyValue(String text) {
