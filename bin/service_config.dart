@@ -88,7 +88,7 @@ void writeToConfigFile(String input, String output) {
 
 part 'app_config.ez.dart';
 
-class AppConfig {
+  class AppConfig {
 
 ''', mode: FileMode.writeOnly);
   outputValueFile.writeAsStringSync('''
