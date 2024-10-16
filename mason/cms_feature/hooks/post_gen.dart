@@ -19,7 +19,7 @@ Future<void> run(HookContext context) async {
       context.logger.progress('Dart packages are being fetched...');
   await Process.run('bash', [
     '-c',
-    'sh scripts/generate_intl.sh',
+    'cd packages && cd ez_intl && fvm flutter gen-l10n',
   ]);
   await Process.run('bash', [
     '-c',
@@ -35,8 +35,11 @@ Future<void> run(HookContext context) async {
 }
 
 void addNewEndPoints(String name) {
-  final file = File('lib/src/core/network/end_points.dart');
-  try {
+  handleWriteFile(() {
+    final file = File('lib/src/core/network/end_points.dart');
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
     const template = '///// Add new here';
     final newEndPoint = """
   // GET, POST ${name.pascalCase}
@@ -49,12 +52,15 @@ void addNewEndPoints(String name) {
     final content = file.readAsStringSync();
     final modifiedContent = content.replaceFirst(template, newEndPoint);
     file.writeAsStringSync(modifiedContent);
-  } catch (_) {}
+  });
 }
 
 void addNewLocale(String name, String path) {
-  final file = File(path);
-  try {
+  handleWriteFile(() {
+    final file = File(path);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
     const template = '''
   }
 }''';
@@ -81,12 +87,15 @@ void addNewLocale(String name, String path) {
     final content = file.readAsStringSync();
     final modifiedContent = content.replaceFirst(template, newLocale);
     file.writeAsStringSync(modifiedContent);
-  } catch (_) {}
+  });
 }
 
 void addNewRouter(String name) {
-  final file = File('lib/src/core/routes/app_router.dart');
-  try {
+  handleWriteFile(() {
+    final file = File('lib/src/core/routes/app_router.dart');
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
     const template = '''///// Add new here''';
 
     final newLocale = '''
@@ -101,12 +110,15 @@ AutoRoute(
     final content = file.readAsStringSync();
     final modifiedContent = content.replaceFirst(template, newLocale);
     file.writeAsStringSync(modifiedContent);
-  } catch (_) {}
+  });
 }
 
 void addNewRoutePath(String name) {
-  final file = File('lib/src/core/routes/routes.dart');
-  try {
+  handleWriteFile(() {
+    final file = File('lib/src/core/routes/routes.dart');
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
     const template = '''///// Add new here''';
 
     final newLocale = '''
@@ -116,13 +128,15 @@ void addNewRoutePath(String name) {
     final content = file.readAsStringSync();
     final modifiedContent = content.replaceFirst(template, newLocale);
     file.writeAsStringSync(modifiedContent);
-  } catch (_) {}
+  });
 }
 
 void addPathToEnv(String name, String path) {
-  final file = File(path);
-
-  try {
+  handleWriteFile(() async {
+    final file = File(path);
+    if (!file.existsSync()) {
+      file.createSync(recursive: true);
+    }
     const template = '''"
     ],
     "DETAIL_SCREEN_TYPE":''';
@@ -135,5 +149,16 @@ void addPathToEnv(String name, String path) {
     final content = file.readAsStringSync();
     final modifiedContent = content.replaceFirst(template, newLocale);
     file.writeAsStringSync(modifiedContent);
-  } catch (_) {}
+  });
+}
+
+void handleWriteFile(
+  void Function() run,
+) async {
+  try {
+    run();
+  } catch (error, stackTrace) {
+    print('Error: $error');
+    print('Stack: $stackTrace');
+  }
 }
