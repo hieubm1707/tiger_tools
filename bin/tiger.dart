@@ -27,7 +27,7 @@ void main(List<String> arguments) {
     }
     if (results.wasParsed(Flag.config.name)) {
       print('Service Config');
-      // buildServiceConfig();
+      buildServiceConfig();
       return;
     }
     if (results.wasParsed(Flag.verbose.name)) {
