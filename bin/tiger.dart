@@ -44,6 +44,8 @@ void main(List<String> arguments) {
       buildServiceConfig();
       return;
     }
+    printUsage(argParser);
+    return;
   } on FormatException catch (e) {
     // Print usage information if an invalid argument was provided.
     stdout.writeln(e.message);
