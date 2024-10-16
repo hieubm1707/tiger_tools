@@ -1,0 +1,1 @@
+mason bundle ./mason/cms_feature -t dart -o ./lib/core/command/mason

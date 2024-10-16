@@ -21,7 +21,8 @@ include: package:lints/recommended.yaml
 
 analyzer:
   exclude:
-    - mason/**
+    - mason/**/__brick__/**
+    - output/**
 
 # For more information about the core and recommended set of lints, see
 # https://dart.dev/go/core-lints
