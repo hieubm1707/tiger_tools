@@ -1,0 +1,7 @@
+name: new_external_service_hooks
+
+environment:
+  sdk: ^3.3.0
+
+dependencies:
+  mason: ^0.1.0-dev.52

@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: ez_bot_api,ez_config
+dependency_overrides:
+  ez_core:
+    path: ../ez_core

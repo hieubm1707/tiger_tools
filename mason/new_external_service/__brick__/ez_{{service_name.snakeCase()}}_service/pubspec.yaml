@@ -1,0 +1,35 @@
+name: ez_{{service_name.snakeCase()}}_service
+description: A new Flutter package project.
+version: 0.0.1
+publish_to: none
+
+environment:
+  sdk: ">=3.1.2 <4.0.0"
+
+dependencies:
+  crypto: ^3.0.2
+  # allows to decouple the interface from a concrete implementation and to access the concrete implementation from everywhere in your App
+  json_annotation: ^4.8.1
+  timezone: ^0.9.2
+
+  ez_core:
+    path: ../ez_core
+
+  retrofit: ^4.0.3
+  dio: ^5.4.0
+  get_it: ^7.6.6
+  injectable: ^2.3.2
+  dart_frog: ^1.1.0
+  envied: ^0.5.3
+
+dev_dependencies:
+  # A build system for Dart code generation and modular compilation
+  build_runner: ^2.4.4
+  # Automatically organize your dart imports
+  import_sorter: ^4.6.0
+  # simple API for creating mocks in Dart
+  json_serializable: ^6.3.2
+  retrofit_generator: ^8.0.6
+  injectable_generator: ^2.4.1
+  very_good_analysis: ^5.1.0
+  envied_generator: ^0.5.3
