@@ -23,15 +23,25 @@ Future<void> runMasonGenerate({
   required Map<String, dynamic> vars,
   Directory? outputDirectory,
   required MasonBundle bundle,
+  FileConflictResolution? fileConflictResolution,
 }) async {
   try {
     final generator = await MasonGenerator.fromBundle(bundle);
     final target =
         DirectoryGeneratorTarget(outputDirectory ?? Directory.current);
-    await generator.hooks.preGen(vars: vars, workingDirectory: target.dir.path);
-    await generator.generate(target, vars: vars);
-    await generator.hooks
-        .postGen(vars: vars, workingDirectory: target.dir.path);
+    await generator.hooks.preGen(
+      vars: vars,
+      workingDirectory: target.dir.path,
+    );
+    await generator.generate(
+      target,
+      vars: vars,
+      fileConflictResolution: fileConflictResolution,
+    );
+    await generator.hooks.postGen(
+      vars: vars,
+      workingDirectory: target.dir.path,
+    );
   } catch (error, stackTrace) {
     print(error);
     print(stackTrace);
@@ -182,6 +192,7 @@ Example:  ts-feature-api --config-path=./config.json --output=./''';
         },
         outputDirectory: outputDirectory,
         bundle: tsFeatureApiBundle,
+        fileConflictResolution: FileConflictResolution.append,
       );
     } catch (e, stackTrace) {
       print('Error: $e');
