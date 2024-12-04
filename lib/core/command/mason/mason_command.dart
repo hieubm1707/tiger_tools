@@ -194,20 +194,20 @@ const templateData = '''{
   "name": "demo",
   "table_name": "demos",
   "sort_property": {
-    "sort_by": "created_at",
+    "sort_by": "createdAt",
     "direction": "asc"
     },
   "property_document":  {
-      "name": "               //  string type, it is the name of property",
-      "type_name": "          //  string type, it is the ts type name of property, allow string | number | boolean | ...",
-      "db_type_name": "       //  string type, it is the database type name, allow STRING | CHAR | TEXT | NUMBER | TINYINT | SMALLINT | MEDIUMINT | INTEGER | BIGINT | FLOAT | DOUBLE | BOOLEAN | TIME | DATE | JSON | JSONB | UUID | VIRTUAL | ENUM | ARRAY",
-      "is_list_property": "   //  bool type, default is false, if true, it will be the list property", 
-      "is_show_property": "   //  bool type, default is false, if true, it will be the show property",
-      "is_filter_property": " //  bool type, default is false, if true, it will be the filter property",
-      "is_primary_key": "     //  bool type, default is false, if true, it will be the primary key, primary key is unique",
-      "is_unique": "          //  bool type, default is false, if true, it will be the unique property",
-      "is_edit_property": "   //  bool type, default is false, if true, it will be the edit property",
-      "allow_nullable": "     //  bool type, default is false, if true, it will be the nullable property"
+    "name": "               //  string type, it is the name of property",
+    "type_name": "          //  string type, it is the ts type name of property, allow string | number | boolean | ...",
+    "db_type_name": "       //  string type, it is the database type name, allow STRING | CHAR | TEXT | NUMBER | TINYINT | SMALLINT | MEDIUMINT | INTEGER | BIGINT | FLOAT | DOUBLE | BOOLEAN | TIME | DATE | JSON | JSONB | UUID | VIRTUAL | ENUM | ARRAY",
+    "is_list_property": "   //  bool type, default is false, if true, it will be the list property", 
+    "is_show_property": "   //  bool type, default is false, if true, it will be the show property",
+    "is_filter_property": " //  bool type, default is false, if true, it will be the filter property",
+    "is_primary_key": "     //  bool type, default is false, if true, it will be the primary key, primary key is unique",
+    "is_unique": "          //  bool type, default is false, if true, it will be the unique property",
+    "is_edit_property": "   //  bool type, default is false, if true, it will be the edit property",
+    "allow_nullable": "     //  bool type, default is false, if true, it will be the nullable property"
   },  
   "properties": [
     {
