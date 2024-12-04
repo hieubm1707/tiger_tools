@@ -19,7 +19,7 @@ Future<void> run(HookContext context) async {
   addControllerAttributes(generateModel);
   addAdminJsAttributes(generateModel);
 
-  await Process.run('bash', ['-c', 'npm run lint']);
+  await Process.run('bash', ['-c', 'npm run lint:fix']);
 
   progress.complete('Feature are being fetched');
   context.logger.success('Finished fetching Feature.');
