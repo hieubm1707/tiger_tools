@@ -103,10 +103,10 @@ class CmsFeatureCommand extends Command {
 class TsFeatureApiCommand extends Command {
   @override
   String get description => '''Generate a typescript api feature. 
-Example:  ts_feature_api --config-path=./config.json --output=./''';
+Example:  ts-feature-api --config-path=./config.json --output=./''';
 
   @override
-  String get name => 'ts_feature_api';
+  String get name => 'ts-feature-api';
 
   TsFeatureApiCommand() {
     argParser
@@ -131,49 +131,62 @@ Example:  ts_feature_api --config-path=./config.json --output=./''';
 
   @override
   void run() async {
-    final results = argResults;
-    if (results == null) {
-      printUsage();
-      return;
-    }
-    if (results.arguments.isEmpty) {
-      printUsage();
-      return;
-    }
+    try {
+      final results = argResults;
+      if (results == null) {
+        printUsage();
+        return;
+      }
+      if (results.arguments.isEmpty) {
+        printUsage();
+        return;
+      }
 
-    if (results.wasParsed('template')) {
-      final file = File('./ts-api-generated-template.json');
-      file.writeAsStringSync(templateData);
+      if (results.wasParsed('template')) {
+        final file = File('./ts-api-generated-template.json');
+        file.writeAsStringSync(templateData);
 
-      return;
-    }
+        return;
+      }
 
-    String configPath = '';
-    if (results.wasParsed('config-path')) {
-      configPath = results['config-path'];
-    }
-    final configFile = File(configPath);
-    if (!configFile.existsSync()) {
-      throw UsageException('$configPath File does not exist', usage);
-    }
-    final configString = configFile.readAsStringSync();
-    final configData = jsonDecode(configString) as Map<String, dynamic>;
+      String configPath = '';
+      if (results.wasParsed('config-path')) {
+        configPath = results['config-path'];
+      }
+      final configFile = File(configPath);
+      if (!configFile.existsSync()) {
+        throw UsageException('$configPath File does not exist', usage);
+      }
+      final configString = configFile.readAsStringSync();
+      final configData = jsonDecode(configString) as Map<String, dynamic>;
 
-    String outputPath = './';
-    if (results.wasParsed('output')) {
-      outputPath = results['output'];
-    }
-    final outputDirectory = Directory(outputPath);
-    if (!outputDirectory.existsSync()) {
-      throw UsageException('$outputPath Directory does not exist', usage);
-    }
+      String outputPath = './';
+      if (results.wasParsed('output')) {
+        outputPath = results['output'];
+      }
+      final outputDirectory = Directory(outputPath);
+      if (!outputDirectory.existsSync()) {
+        throw UsageException('$outputPath Directory does not exist', usage);
+      }
 
-    print('Generating Typescript Api feature in $outputPath');
-    await runMasonGenerate(
-      vars: configData,
-      outputDirectory: outputDirectory,
-      bundle: tsFeatureApiBundle,
-    );
+      print('Generating Typescript Api feature in $outputPath');
+
+      final now = DateTime.now();
+      final dateTimeNow =
+          '${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}';
+      await runMasonGenerate(
+        vars: {
+          ...configData,
+          'template': false,
+          'date_now': dateTimeNow,
+        },
+        outputDirectory: outputDirectory,
+        bundle: tsFeatureApiBundle,
+      );
+    } catch (e, stackTrace) {
+      print('Error: $e');
+      print('Stack: $stackTrace');
+    }
   }
 }
 

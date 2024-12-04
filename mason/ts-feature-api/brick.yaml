@@ -1,4 +1,4 @@
-name: ts_feature_api
+name: ts-feature-api
 description: A new brick created with the Mason CLI.
 
 # The following defines the brick repository url.
@@ -30,4 +30,4 @@ vars:
     type: boolean
     description: Get the template to use
     default: false
-    prompt: Can you get this template?
+    prompt: Can you want to get template?
