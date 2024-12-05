@@ -30,4 +30,4 @@ vars:
     type: boolean
     description: Get the template to use
     default: false
-    prompt: Can you want to get template?
+    prompt: Do you want to get template?
