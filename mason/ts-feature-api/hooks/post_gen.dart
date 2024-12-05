@@ -9,6 +9,13 @@ Future<void> run(HookContext context) async {
   if (hasGetTemplate) {
     return;
   }
+  final name = context.vars['name'] as String?;
+  final tableName = context.vars['table_name'] as String?;
+  final properties = context.vars['properties'] as List?;
+  if (name == null || tableName == null || properties == null) {
+    context.logger.err('Missing required template variables.');
+    return;
+  }
 
   // Add dependencies
   final progress = context.logger.progress('Feature are being fetched...');
