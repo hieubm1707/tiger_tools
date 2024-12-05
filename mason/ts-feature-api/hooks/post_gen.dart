@@ -40,7 +40,7 @@ void handleWriteFile(
 void addModelAttributes(GenerateModel generateModel) {
   handleWriteFile(() {
     final name = generateModel.name;
-    final file = File('src/models/${name.paramCase}.model.ts');
+    final file = File('${name.defaultPath}/models/${name.paramCase}.model.ts');
     if (!file.existsSync()) {
       file.createSync(recursive: true);
     }
@@ -53,33 +53,53 @@ void addModelAttributes(GenerateModel generateModel) {
 """;
 
     for (final property in generateModel.properties) {
-      content = content.add(' @PrimaryKey\n', isAdd: property.isPrimaryKey);
-      content = content.add(' @Unique\n', isAdd: property.isUnique);
-      content = content.add(' @AllowNull(${property.allowNullable})\n');
-      content = content.add(' @Comment(\'${property.name} of the ${name}\')\n');
-      if (property.isPrimaryKey && property.dbTypeName == 'UUID') {
-        content = content.add(' @Default(DataType.UUIDV4)\n');
-        content = content.add(' @Column(DataType.UUID)\n');
-      } else {
-        content = content.add(' @Column(DataType.${property.dbTypeName})\n');
-      }
+      ///  @Column({
+      //   primaryKey: true,
+      //   type: DataType.UUID,
+      //   defaultValue: DataType.UUIDV4,
+      // })
+      content = content.add(' @@Column({\n');
+      content = content.add(
+        '   primaryKey: ${property.isPrimaryKey},\n',
+        isAdd: property.isPrimaryKey,
+      );
+      content = content.add(
+        '   type: DataType.${property.dbTypeName},\n',
+      );
+      content = content.add(
+        '   defaultValue: DataType.UUIDV4,\n',
+        isAdd: property.dbTypeName == 'UUID',
+      );
+      content = content.add(
+        '   allowNull: ${property.allowNullable},\n',
+      );
+      content = content.add(
+        '   unique: ${property.isUnique},\n',
+        isAdd: property.isUnique,
+      );
+      content = content.add(' })\n');
+      content = content.add(
+        " @Index({ name: '${name}_${property.name}_idx', using: 'btree', unique: true })\n",
+        isAdd: property.isPrimaryKey || property.isUnique,
+      );
       final allowNullable = property.allowNullable ? '?' : '!';
       content = content.add(
           ' ${property.name.camelCase}$allowNullable: ${property.typeName};\n');
-      content = content.add('\n');
     }
     content = content.add('''
   @CreatedAt
-  @AllowNull(true)
-  @Comment("Date and time of the ${name}'s creation date")
-  @Column(DataType.DATE)
-  createdAt?: string;
+  @Column({
+    allowNull: true,
+    type: DataType.DATE,
+  })
+  createdAt?: Date;
 
   @UpdatedAt
-  @AllowNull(true)
-  @Comment("Date and time of the ${name}'s last update")
-  @Column(DataType.DATE)
-  updatedAt?: string;
+  @Column({
+    allowNull: true,
+    type: DataType.DATE,
+  })
+  updatedAt?: Date;
   ''');
 
     final fileContent = file.readAsStringSync();
@@ -91,7 +111,7 @@ void addModelAttributes(GenerateModel generateModel) {
 void addTypeAttributes(GenerateModel generateModel) {
   handleWriteFile(() {
     final name = generateModel.name;
-    final indexFile = File('src/types/index.ts');
+    final indexFile = File('${name.defaultPath}/types/index.ts');
     if (!indexFile.existsSync()) {
       indexFile.createSync(recursive: true);
       indexFile.writeAsStringSync('''// Export types from here
@@ -110,7 +130,7 @@ export { default } from './index.d';''');
       indexFile.writeAsStringSync(modifiedIndexContent);
     }
 
-    final file = File('src/types/${name.paramCase}.type.ts');
+    final file = File('${name.defaultPath}/types/${name.paramCase}.type.ts');
 
     var formattedAttributes = "";
     var createAttributes = "";
@@ -164,7 +184,7 @@ export { default } from './index.d';''');
 void addDtoAttributes(GenerateModel generateModel) {
   handleWriteFile(() {
     final name = generateModel.name;
-    final file = File('src/dto/${name.paramCase}.dto.ts');
+    final file = File('${name.defaultPath}/dto/${name.paramCase}.dto.ts');
 
     var formattedAttributes = "";
 
@@ -190,7 +210,8 @@ void addDtoAttributes(GenerateModel generateModel) {
 void addControllerAttributes(GenerateModel generateModel) {
   handleWriteFile(() {
     final name = generateModel.name;
-    final file = File('src/controllers/${name.paramCase}.controller.ts');
+    final file =
+        File('${name.defaultPath}/controllers/${name.paramCase}.controller.ts');
 
     var createAttributes = "";
     var updateAttributes = "";
@@ -224,8 +245,8 @@ void addControllerAttributes(GenerateModel generateModel) {
 void addAdminJsAttributes(GenerateModel generateModel) {
   handleWriteFile(() {
     final name = generateModel.name;
-    final resourceFile =
-        File('src/admin/resources/${name.paramCase}.resource.ts');
+    final resourceFile = File(
+        '${name.defaultPath}/admin/resources/${name.paramCase}.resource.ts');
     final properties = generateModel.properties;
     var listAttributes = properties
         .where((element) => element.isListProperty)
@@ -269,29 +290,6 @@ void addAdminJsAttributes(GenerateModel generateModel) {
       },''',
     );
     resourceFile.writeAsStringSync(modifiedResourceContent);
-
-    final indexFile = File('src/admin/index.ts');
-    if (indexFile.existsSync()) {
-      final indexContent = indexFile.readAsStringSync();
-      var modifiedIndexContent = indexContent.replaceFirst(
-        '// insert menu here',
-        '''${name.camelCase}: {
-    name: '${name.pascalCase}',
-    icon: '${name.pascalCase}',
-  },
-  // insert menu here
-''',
-      );
-      indexFile.writeAsStringSync(modifiedIndexContent);
-    } else {
-      indexFile.writeAsStringSync('''export const menu = {
-  ${name.camelCase}: {
-    name: '${name.pascalCase}',
-    icon: '${name.pascalCase}',
-  },
-  // insert menu here
-};''');
-    }
   });
 }
 
@@ -324,14 +322,14 @@ void addMigrateAttributes(
     content = content.add('''createdAt: {
           type: Sequelize.DATE,
           allowNull: false,
-          field: 'created_at',
+          field: 'createdAt',
           comment: "Date and time of the news's creation date",
         },''');
 
     content = content.add('''updatedAt: {
           type: Sequelize.DATE,
           allowNull: false,
-          field: 'updated_at',
+          field: 'updatedAt',
           comment: "Date and time of the news's last update",
         },''');
 

@@ -1,0 +1,1 @@
+export { default as {{name.pascalCase()}}Model } from './{{name.paramCase()}}.model';
