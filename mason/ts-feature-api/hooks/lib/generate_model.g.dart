@@ -39,6 +39,8 @@ PropertyModel _$PropertyModelFromJson(Map<String, dynamic> json) =>
       isPrimaryKey: json['is_primary_key'] as bool? ?? false,
       allowNullable: json['allow_nullable'] as bool? ?? false,
       isUnique: json['is_unique'] as bool? ?? false,
+      isCreateIndex: json['is_create_index'] as bool? ?? false,
+      isAutoIncrement: json['is_auto_increment'] as bool? ?? false,
     );
 
 Map<String, dynamic> _$PropertyModelToJson(PropertyModel instance) =>
@@ -53,6 +55,8 @@ Map<String, dynamic> _$PropertyModelToJson(PropertyModel instance) =>
       'is_primary_key': instance.isPrimaryKey,
       'allow_nullable': instance.allowNullable,
       'is_unique': instance.isUnique,
+      'is_create_index': instance.isCreateIndex,
+      'is_auto_increment': instance.isAutoIncrement,
     };
 
 SortPropertyModel _$SortPropertyModelFromJson(Map<String, dynamic> json) =>

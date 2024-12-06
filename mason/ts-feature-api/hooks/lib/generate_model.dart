@@ -35,6 +35,8 @@ class PropertyModel {
     this.isPrimaryKey = false,
     this.allowNullable = false,
     this.isUnique = false,
+    this.isCreateIndex = false,
+    this.isAutoIncrement = false,
   });
 
   final String name;
@@ -47,6 +49,8 @@ class PropertyModel {
   final bool isPrimaryKey;
   final bool allowNullable;
   final bool isUnique;
+  final bool isCreateIndex;
+  final bool isAutoIncrement;
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) =>
       _$PropertyModelFromJson(json);
