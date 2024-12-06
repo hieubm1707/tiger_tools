@@ -15,7 +15,9 @@
     "is_primary_key": "     //  bool type, default is false, if true, it will be the primary key, primary key is unique",
     "is_unique": "          //  bool type, default is false, if true, it will be the unique property",
     "is_edit_property": "   //  bool type, default is false, if true, it will be the edit property",
-    "allow_nullable": "     //  bool type, default is false, if true, it will be the nullable property"
+    "is_create_index": "    //  bool type, default is false, if true, it will be the create index property",
+    "allow_nullable": "     //  bool type, default is false, if true, it will be the nullable property",
+    "is_auto_increment": "  //  bool type, default is false, if true, it will be the auto increment property for number type"
   },
   "properties": [
     {
@@ -28,7 +30,9 @@
       "is_primary_key": true,
       "is_unique": false,
       "is_edit_property": false,
-      "allow_nullable": false
+      "is_create_index": true,
+      "allow_nullable": false,
+      "is_auto_increment": false
     },
     {
       "name": "name",
