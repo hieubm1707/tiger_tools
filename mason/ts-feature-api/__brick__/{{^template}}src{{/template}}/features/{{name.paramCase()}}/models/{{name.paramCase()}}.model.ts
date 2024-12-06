@@ -11,6 +11,7 @@ import {
   Table,
   Unique,
   UpdatedAt,
+  Index,
 } from 'sequelize-typescript';
 
 @Table({
