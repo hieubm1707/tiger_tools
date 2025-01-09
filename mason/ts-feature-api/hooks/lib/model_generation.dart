@@ -10,6 +10,7 @@ class ModelGeneration {
   static void addModelProperties(GenerateModel generateModel) {
     handleWriteFile(() {
       final name = generateModel.name;
+      final tableName = generateModel.tableName;
       final file =
           File('${name.defaultPath}/models/${name.paramCase}.model.ts');
       if (!file.existsSync()) {
@@ -25,6 +26,7 @@ class ModelGeneration {
 
       for (final property in generateModel.properties) {
         content = content.add(' @Column({\n');
+        content = content.add('   field: \'${property.name}\',\n');
         content = content.add(
           '   primaryKey: ${property.isPrimaryKey},\n',
           isAdd: property.isPrimaryKey,
@@ -33,8 +35,8 @@ class ModelGeneration {
           '   type: DataType.${property.dbTypeName},\n',
         );
         content = content.add(
-          '   defaultValue: DataType.UUIDV4,\n',
-          isAdd: property.dbTypeName == 'UUID',
+          '   defaultValue: ${property.defaultValue != null ? property.defaultValue : 'DataType.UUIDV4'},\n',
+          isAdd: property.defaultValue != null || property.dbTypeName == 'UUID',
         );
         content = content.add(
           '   allowNull: ${property.allowNullable},\n',
@@ -45,39 +47,48 @@ class ModelGeneration {
         );
         content = content.add(
           '   autoIncrement: ${property.isAutoIncrement},\n',
-          isAdd: property.isAutoIncrement || property.typeName == 'number',
+          isAdd: property.isAutoIncrement && property.typeName == 'number',
+        );
+        content = content.add(
+          '''   defaultValue: Sequelize.literal("nextval('${tableName}_${property.name}_seq'::regclass)"),\n''',
+          isAdd: property.isAutoIncrement && property.typeName == 'number',
         );
         content = content.add(' })\n');
 
         content = content.add(
-          " @Index({ name: '${name}_${property.name}_idx', using: 'btree', unique: true })\n",
-          isAdd: property.isCreateIndex ||
-              property.isUnique ||
-              property.isPrimaryKey,
+          " @Index({ name: '${tableName}_${property.name.snakeCase}_idx', using: 'btree'${property.isUnique ? ', unique: true' : ''} })\n",
+          isAdd: property.isCreateIndex || property.isPrimaryKey,
         );
 
         final allowNullable = property.allowNullable ? '?' : '!';
         content = content.add(
             ' ${property.name.camelCase}$allowNullable: ${property.typeName};\n\n');
       }
-      content = content.add('''
+      if (generateModel.includeCreatedAt) {
+        content = content.add('''
 @CreatedAt
 @Column({
-  allowNull: true,
+  field: 'created_at',
+  allowNull: false,
   type: DataType.DATE,
 })
 createdAt?: Date;
 
 @UpdatedAt
 @Column({
+  field: 'updated_at',
   allowNull: true,
   type: DataType.DATE,
 })
 updatedAt?: Date;
 ''');
+      }
 
       final fileContent = file.readAsStringSync();
-      final modifiedContent = fileContent.replaceFirst(template, content);
+      final modifiedContent = fileContent.replaceFirst(
+        template,
+        '$content\n// insert new model attributes here',
+      );
       file.writeAsStringSync(modifiedContent);
     });
   }

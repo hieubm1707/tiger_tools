@@ -17,6 +17,7 @@ GenerateModel _$GenerateModelFromJson(Map<String, dynamic> json) =>
           ? null
           : SortPropertyModel.fromJson(
               json['sort_property'] as Map<String, dynamic>),
+      includeCreatedAt: json['include_created_at'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$GenerateModelToJson(GenerateModel instance) =>
@@ -25,6 +26,7 @@ Map<String, dynamic> _$GenerateModelToJson(GenerateModel instance) =>
       'table_name': instance.tableName,
       'sort_property': instance.sortProperty,
       'properties': instance.properties,
+      'include_created_at': instance.includeCreatedAt,
     };
 
 PropertyModel _$PropertyModelFromJson(Map<String, dynamic> json) =>
@@ -41,6 +43,7 @@ PropertyModel _$PropertyModelFromJson(Map<String, dynamic> json) =>
       isUnique: json['is_unique'] as bool? ?? false,
       isCreateIndex: json['is_create_index'] as bool? ?? false,
       isAutoIncrement: json['is_auto_increment'] as bool? ?? false,
+      defaultValue: json['default_value'] as String?,
     );
 
 Map<String, dynamic> _$PropertyModelToJson(PropertyModel instance) =>
@@ -57,6 +60,7 @@ Map<String, dynamic> _$PropertyModelToJson(PropertyModel instance) =>
       'is_unique': instance.isUnique,
       'is_create_index': instance.isCreateIndex,
       'is_auto_increment': instance.isAutoIncrement,
+      'default_value': instance.defaultValue,
     };
 
 SortPropertyModel _$SortPropertyModelFromJson(Map<String, dynamic> json) =>

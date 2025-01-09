@@ -13,4 +13,13 @@ const schemas = {
   object: Joi.object(),
 };
 
-export { celebrate, Joi, schemas };
+const create{{name.pascalCase()}}Schema = Joi.object({
+  // insert fields here
+}).required();
+
+const update{{name.pascalCase()}}Schema = Joi.object({
+  // insert fields here
+}).required();
+
+
+export { celebrate, Joi, schemas, create{{name.pascalCase()}}Schema, update{{name.pascalCase()}}Schema };

@@ -22,7 +22,7 @@ Future<void> run(HookContext context) async {
   ModelGeneration.addModelProperties(generateModel);
   TypeGeneration.addTypeProperties(generateModel);
   TypeGeneration.addDtoProperties(generateModel);
-  ControllerGeneration.addControllerProperties(generateModel);
+  MiddlewareGeneration.addMiddlewareProperties(generateModel);
   AdminResourceGeneration.addAdminJsProperties(generateModel);
   MigrateGeneration.addMigrateProperties(generateModel, context.vars);
   ServiceGeneration.handleUniqueProperties(generateModel);

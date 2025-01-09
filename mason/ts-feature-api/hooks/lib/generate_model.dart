@@ -8,12 +8,14 @@ class GenerateModel {
   final String tableName;
   final SortPropertyModel? sortProperty;
   final List<PropertyModel> properties;
+  final bool includeCreatedAt;
 
   GenerateModel({
     required this.name,
     required this.tableName,
     required this.properties,
     this.sortProperty,
+    this.includeCreatedAt = true,
   });
 
   factory GenerateModel.fromJson(Map<String, dynamic> json) =>
@@ -37,6 +39,7 @@ class PropertyModel {
     this.isUnique = false,
     this.isCreateIndex = false,
     this.isAutoIncrement = false,
+    this.defaultValue,
   });
 
   final String name;
@@ -51,6 +54,7 @@ class PropertyModel {
   final bool isUnique;
   final bool isCreateIndex;
   final bool isAutoIncrement;
+  final String? defaultValue;
 
   factory PropertyModel.fromJson(Map<String, dynamic> json) =>
       _$PropertyModelFromJson(json);

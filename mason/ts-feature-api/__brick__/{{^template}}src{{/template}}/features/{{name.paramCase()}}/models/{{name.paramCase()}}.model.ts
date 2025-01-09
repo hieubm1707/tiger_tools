@@ -1,4 +1,6 @@
 
+
+import { Sequelize } from 'sequelize';
 import {
   AllowNull,
   Column,

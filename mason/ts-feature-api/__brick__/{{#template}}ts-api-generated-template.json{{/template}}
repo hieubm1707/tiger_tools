@@ -5,6 +5,7 @@
     "sort_by": "createdAt",
     "direction": "asc"
   },
+  "include_created_at": true,
   "property_document": {
     "name": "               //  string type, it is the name of property",
     "type_name": "          //  string type, it is the ts type name of property, allow string | number | boolean | ...",
@@ -17,7 +18,8 @@
     "is_edit_property": "   //  bool type, default is false, if true, it will be the edit property",
     "is_create_index": "    //  bool type, default is false, if true, it will be the create index property",
     "allow_nullable": "     //  bool type, default is false, if true, it will be the nullable property",
-    "is_auto_increment": "  //  bool type, default is false, if true, it will be the auto increment property for number type"
+    "is_auto_increment": "  //  bool type, default is false, if true, it will be the auto increment property for number type",
+    "default_value": "      // string type, it is the default value of property"
   },
   "properties": [
     {

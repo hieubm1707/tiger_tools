@@ -40,7 +40,11 @@ export { default } from './index.d';''');
         final nullable = property.allowNullable ? '?' : '';
         final content =
             '  ${property.name.camelCase}$nullable: ${property.typeName};\n';
-        formattedProperties = formattedProperties.add(content);
+        final formatContent =
+            '  ${property.name.snakeCase}$nullable: ${property.typeName};\n';
+        final filterContent =
+            '  ${property.name.camelCase}?: ${property.typeName};\n';
+        formattedProperties = formattedProperties.add(formatContent);
         createProperties = createProperties.add(
           content,
           isAdd: property.isEditProperty,
@@ -50,31 +54,33 @@ export { default } from './index.d';''');
           isAdd: property.isEditProperty,
         );
         filterProperties = filterProperties.add(
-          content,
+          filterContent,
           isAdd: property.isFilterProperty,
         );
       }
-      formattedProperties =
-          formattedProperties.add('  createdAt?: Date;\n  updatedAt?: Date;\n');
-      filterProperties =
-          filterProperties.add('  createdAt?: Date;\n  updatedAt?: Date;\n');
+      if (generateModel.includeCreatedAt) {
+        formattedProperties = formattedProperties
+            .add('  created_at?: Date;\n  updated_at?: Date;\n');
+        filterProperties =
+            filterProperties.add('  createdAt?: Date;\n  updatedAt?: Date;\n');
+      }
 
       final fileContent = file.readAsStringSync();
       var modifiedContent = fileContent.replaceFirst(
         '    // insert formatted attributes here',
-        formattedProperties,
+        '$formattedProperties// insert formatted attributes here',
       );
       modifiedContent = modifiedContent.replaceFirst(
         '    // insert create attributes here',
-        createProperties,
+        '$createProperties// insert create attributes here',
       );
       modifiedContent = modifiedContent.replaceFirst(
         '    // insert update attributes here',
-        updateProperties,
+        '$updateProperties// insert update attributes here',
       );
       modifiedContent = modifiedContent.replaceFirst(
         '    // insert filter attributes here',
-        filterProperties,
+        '$filterProperties// insert filter attributes here',
       );
       file.writeAsStringSync(modifiedContent);
     });
@@ -89,18 +95,20 @@ export { default } from './index.d';''');
 
       for (final property in generateModel.properties) {
         final content =
-            '  ${property.name.camelCase}: ${name.camelCase}.${property.name.camelCase},\n';
+            '  ${property.name.snakeCase}: ${name.camelCase}.${property.name.camelCase},\n';
         formattedProperties = formattedProperties.add(content);
       }
-      formattedProperties =
-          formattedProperties.add(' createdAt: ${name.camelCase}.createdAt,\n');
-      formattedProperties =
-          formattedProperties.add(' updatedAt: ${name.camelCase}.updatedAt,\n');
+      if (generateModel.includeCreatedAt) {
+        formattedProperties = formattedProperties
+            .add('  created_at: ${name.camelCase}.createdAt,\n');
+        formattedProperties = formattedProperties
+            .add('  updated_at: ${name.camelCase}.updatedAt,\n');
+      }
 
       final fileContent = file.readAsStringSync();
       var modifiedContent = fileContent.replaceFirst(
         '    // insert formatted attributes here',
-        formattedProperties,
+        '$formattedProperties// insert formatted attributes here',
       );
       file.writeAsStringSync(modifiedContent);
     });

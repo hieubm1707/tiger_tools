@@ -1,6 +1,5 @@
 import { ResourceWithOptions } from 'adminjs';
 import { Sequelize } from 'sequelize';
-import { menu } from '..';
 
 export default (sequelize: Sequelize): ResourceWithOptions => {
   const resource: ResourceWithOptions = {
@@ -29,7 +28,6 @@ export default (sequelize: Sequelize): ResourceWithOptions => {
           isAccessible: true,
         },
       },
-      navigation: menu.{{name.camelCase()}},
       listProperties: // insert list here
       showProperties: // insert show here
       editProperties: // insert edit here

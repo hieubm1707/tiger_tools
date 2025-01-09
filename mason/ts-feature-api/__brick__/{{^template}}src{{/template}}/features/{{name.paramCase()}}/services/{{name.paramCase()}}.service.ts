@@ -25,7 +25,7 @@ export default class {{name.pascalCase()}}Service {
   }
 
   /**
-   * Creates a new {{name.camelCase()}} or throws a `BadRequest` error if a {{name.camelCase()}} with the same email address already exists.
+   * Creates a new {{name.camelCase()}} or throws a `BadRequest` error if a {{name.camelCase()}} already exists.
    */
   async create{{name.pascalCase()}}({{name.camelCase()}}Details: Create{{name.pascalCase()}}DTO): Promise<{{name.pascalCase()}}> {
     // check exist model
@@ -46,7 +46,7 @@ export default class {{name.pascalCase()}}Service {
   }
 
   /**
-   * Creates a new {{name.camelCase()}} or throws a `BadRequest` error if a {{name.camelCase()}} with the same email address already exists.
+   * Creates a new {{name.camelCase()}} or throws a `BadRequest` error if a {{name.camelCase()}} already exists.
    */
   async update{{name.pascalCase()}}({{name.camelCase()}}Id: string, {{name.camelCase()}}Details: Update{{name.pascalCase()}}DTO): Promise<{{name.pascalCase()}}> {
     const {{name.camelCase()}} = await {{name.pascalCase()}}Model.findByPk({{name.camelCase()}}Id);

@@ -182,8 +182,7 @@ Example:  ts-feature-api --config-path=./config.json --output=./''';
       print('Generating Typescript Api feature in $outputPath');
 
       final now = DateTime.now();
-      final dateTimeNow =
-          '${now.year}${now.month}${now.day}${now.hour}${now.minute}${now.second}';
+      final dateTimeNow = now.millisecondsSinceEpoch;
       await runMasonGenerate(
         vars: {
           ...configData,

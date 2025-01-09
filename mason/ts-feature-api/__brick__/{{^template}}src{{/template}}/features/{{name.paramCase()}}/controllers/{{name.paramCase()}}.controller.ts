@@ -1,6 +1,7 @@
+import { RequestHandler } from 'express';
 import Router from 'express-promise-router';
 import { Container } from 'typedi';
-import { validation } from '../middlewares';
+import { transformKeysMiddleware, validation } from '../middlewares';
 import { {{name.pascalCase()}}Service } from '../services';
 import { Create{{name.pascalCase()}}DTO, Filter{{name.pascalCase()}}DTO, {{name.pascalCase()}}, Update{{name.pascalCase()}}DTO } from '../types';
 
@@ -11,8 +12,11 @@ const router = Router();
  *
  * Get {{name.camelCase()}} list by filtering
  */
-router.get<{}, {{name.pascalCase()}}[], {}, Filter{{name.pascalCase()}}DTO>('/', async (req, res) => {
-  const filter = req.query;
+router.get<{}, {{name.pascalCase()}}[], {}, Filter{{name.pascalCase()}}DTO>(
+  '/', 
+  transformKeysMiddleware as RequestHandler<{}, {{name.pascalCase()}}[], {}, Filter{{name.pascalCase()}}DTO>,
+  async (req, res) => {
+  const filter = req.query as Filter{{name.pascalCase()}}DTO;
 
   const {{name.camelCase()}} = await Container.get({{name.pascalCase()}}Service).get{{name.pascalCase()}}(filter);
 
@@ -48,12 +52,11 @@ router.get<{ {{name.camelCase()}}Id: string }, {{name.pascalCase()}}>(
 router.post<{}, {{name.pascalCase()}}, Create{{name.pascalCase()}}DTO>(
   '/',
   validation.celebrate({
-    body: validation.Joi.object({
-      // insert create attributes here
-    }).required(),
+    body: validation.create{{name.pascalCase()}}Schema,
   }),
+  transformKeysMiddleware,
   async (req, res) => {
-    const {{name.camelCase()}}Details = req.body;
+    const {{name.camelCase()}}Details = req.body as Create{{name.pascalCase()}}DTO;
 
     const {{name.camelCase()}} = await Container.get({{name.pascalCase()}}Service).create{{name.pascalCase()}}({{name.camelCase()}}Details);
 
@@ -72,13 +75,12 @@ router.put<{ {{name.camelCase()}}Id: string }, {{name.pascalCase()}}, Update{{na
     params: {
       {{name.camelCase()}}Id: validation.schemas.uuid.required(),
     },
-    body: validation.Joi.object({
-      // insert update attributes here
-    }).required(),
+    body: validation.update{{name.pascalCase()}}Schema,
   }),
+  transformKeysMiddleware,
   async (req, res) => {
     const { {{name.camelCase()}}Id } = req.params;
-    const {{name.camelCase()}}Details = req.body;
+    const {{name.camelCase()}}Details = req.body as Update{{name.pascalCase()}}DTO;
 
     const {{name.camelCase()}} = await Container.get({{name.pascalCase()}}Service).update{{name.pascalCase()}}({{name.camelCase()}}Id, {{name.camelCase()}}Details);
 
